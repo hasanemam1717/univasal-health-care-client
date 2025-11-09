@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { logOut } from "../services/Auth";
+import { useUser } from "@/context/UserContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +23,12 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const { user, setIsLoading } = useUser();
+  const handleLogout = () => {
+    logOut();
+    setIsLoading(true);
+  };
 
   const navItems = [
     { name: "Home", href: "/", icon: "🏠" },
@@ -101,72 +111,89 @@ const Navbar = () => {
             <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg">
               Book Appointment
             </button>
+            {/* Register and login */}
 
-            {/* User Profile */}
-            <div className="relative">
-              <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-blue-50 transition-colors"
-              >
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-semibold">JD</span>
-                </div>
-                <span className="text-gray-700">John Doe</span>
-                <i
-                  className={`fas fa-chevron-down text-gray-500 transition-transform ${
-                    userMenuOpen ? "rotate-180" : ""
-                  }`}
-                ></i>
-              </button>
+            {user ? (
+              <>
+                <div className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                  >
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>User</AvatarFallback>
+                      </Avatar>
+                    </div>
+                  </button>
 
-              {/* User Dropdown */}
-              {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-gray-800">John Doe</p>
-                    <p className="text-sm text-gray-600">
-                      john.doe@example.com
-                    </p>
-                  </div>
-                  <div className="py-2">
-                    <Link
-                      href="/profile"
-                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
-                    >
-                      <i className="fas fa-user mr-3 text-blue-500"></i>
-                      My Profile
-                    </Link>
-                    <Link
-                      href="/appointments"
-                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
-                    >
-                      <i className="fas fa-calendar mr-3 text-green-500"></i>
-                      My Appointments
-                    </Link>
-                    <Link
-                      href="/records"
-                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
-                    >
-                      <i className="fas fa-file-medical mr-3 text-purple-500"></i>
-                      Health Records
-                    </Link>
-                    <Link
-                      href="/settings"
-                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
-                    >
-                      <i className="fas fa-cog mr-3 text-gray-500"></i>
-                      Settings
-                    </Link>
-                  </div>
-                  <div className="border-t border-gray-100 pt-2">
-                    <button className="flex items-center w-full px-4 py-2 text-red-600 hover:bg-red-50">
-                      <i className="fas fa-sign-out-alt mr-3"></i>
-                      Sign Out
-                    </button>
-                  </div>
+                  {/* User Dropdown */}
+                  {userMenuOpen && (
+                    <div className="absolute  right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50">
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <p className="font-semibold text-gray-800">John Doe</p>
+                        <p className="text-sm text-gray-600">
+                          john.doe@example.com
+                        </p>
+                      </div>
+                      <div className="py-2">
+                        <Link
+                          href="/profile"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
+                        >
+                          <i className="fas fa-user mr-3 text-blue-500"></i>
+                          My Profile
+                        </Link>
+                        <Link
+                          href="/appointments"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
+                        >
+                          <i className="fas fa-calendar mr-3 text-green-500"></i>
+                          My Appointments
+                        </Link>
+                        <Link
+                          href="/records"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
+                        >
+                          <i className="fas fa-file-medical mr-3 text-purple-500"></i>
+                          Health Records
+                        </Link>
+                        <Link
+                          href="/settings"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"
+                        >
+                          <i className="fas fa-cog mr-3 text-gray-500"></i>
+                          Settings
+                        </Link>
+                      </div>
+                      <div className="border-t border-gray-100 pt-2">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center w-full px-4 py-2 text-red-600 hover:bg-red-50"
+                        >
+                          <i className="fas fa-sign-out-alt mr-3"></i>
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <>
+                <Link href={"/register"}>
+                  <Button variant="outline" className="rounded-full">
+                    Register
+                  </Button>
+                </Link>
+                <Link href={"/login"}>
+                  <Button variant="outline" className="rounded-full">
+                    Log in
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
