@@ -10,24 +10,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form"; 
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { loginService } from "@/components/services/Auth"; // Define this service separately
 import { loginSchema } from "./loginValidation";
 import { toast } from "sonner";
 
 export default function LoginForm() {
   const form = useForm({ resolver: zodResolver(loginSchema) });
-const {formState:{isSubmitting}} = form
+  const {
+    formState: { isSubmitting },
+  } = form;
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const response = await loginService(data);
-           if(response?.success){
-        toast.success(response?.message)
-        
+      if (response?.success) {
+        toast.success(response?.message);
+      } else {
+        toast.error(response?.message);
       }
-    else{
-        toast.error(response?.message)
-    }
     } catch (err) {
       console.log(err);
       // Handle login error
@@ -47,7 +47,9 @@ const {formState:{isSubmitting}} = form
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Email</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -67,7 +69,9 @@ const {formState:{isSubmitting}} = form
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -87,7 +91,7 @@ const {formState:{isSubmitting}} = form
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-10 py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg"
                 type="submit"
               >
-                {isSubmitting ?"Loging..." :"Login"}
+                {isSubmitting ? "Loging..." : "Login"}
               </button>
             </div>
           </form>
