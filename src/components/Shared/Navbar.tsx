@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { logOut } from "../services/Auth";
@@ -14,7 +14,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const pathname = usePathname();
-
+  const router = useRouter();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -28,6 +28,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logOut();
     setIsLoading(true);
+    router.push("/login");
   };
 
   const navItems = [
@@ -47,8 +48,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-400 ${
-        isScrolled ? "bg-white shadow-lg py-1" : "bg-blue-50 py-2"
+      className={`sticky top-0 z-50 bg-white shadow-md h-16 transition-all duration-400 ${
+        isScrolled ? "bg-white shadow-lg py-0" : "bg-blue-50 py-1"
       }`}
     >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">

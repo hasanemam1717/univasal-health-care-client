@@ -11,31 +11,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import { patientRegisterSchema } from "./registerValidation";
 import { patientRegisterService } from "@/components/services/Auth";
 import { toast } from "sonner";
+import { patientRegisterSchema } from "./registerValidation";
 
 export default function RegisterForm() {
-  const form = useForm({resolver:zodResolver(patientRegisterSchema)});
-  const {formState:{isSubmitting}} = form
+  const form = useForm({ resolver: zodResolver(patientRegisterSchema) });
+  const {
+    formState: { isSubmitting },
+  } = form;
 
-  const password = form.watch('password')
-  const passwordConfirm = form.watch('confirmPassword')
+  const password = form.watch("password");
+  const passwordConfirm = form.watch("confirmPassword");
 
-  const onSubmit: SubmitHandler<FieldValues> = async(data) => {
-      try{
-      const response = await patientRegisterService(data)
-      if(response?.success){
-        toast.success(response?.message)
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const response = await patientRegisterService(data);
+      if (response?.success) {
+        toast.success(response?.message);
+      } else {
+        toast.error(response?.error?.name);
       }
-     else{
-       toast.error(response?.error?.name)
-     }
-    
-  }
-  catch(err){
-    console.log(err)
-  }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -55,7 +54,9 @@ export default function RegisterForm() {
               name="patient.email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Email</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -75,7 +76,9 @@ export default function RegisterForm() {
               name="patient.name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Name</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Name
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Name"
@@ -94,7 +97,9 @@ export default function RegisterForm() {
               name="patient.contactNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Contact Number</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Contact Number
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Phone number"
@@ -113,7 +118,9 @@ export default function RegisterForm() {
               name="patient.address"
               render={({ field }) => (
                 <FormItem className="">
-                  <FormLabel className="text-gray-700 font-medium">Address</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Address
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Address"
@@ -133,7 +140,9 @@ export default function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -153,7 +162,9 @@ export default function RegisterForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Confirm Password</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">
+                    Confirm Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -169,14 +180,13 @@ export default function RegisterForm() {
             />
 
             <div className="md:col-span-2 flex justify-center mt-4">
-    <button
-  disabled={!(passwordConfirm && password === passwordConfirm)}
-  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-10 py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-  type="submit"
->
-  {isSubmitting ? "Registering" :"Register"}
-</button>
-
+              <button
+                disabled={!(passwordConfirm && password === passwordConfirm)}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-10 py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                type="submit"
+              >
+                {isSubmitting ? "Registering" : "Register"}
+              </button>
             </div>
           </form>
         </Form>
