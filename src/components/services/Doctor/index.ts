@@ -14,7 +14,6 @@ export async function getDoctors() {
     if (!result.success) {
       throw new Error("Failed to fetch user data");
     }
-    console.log(result);
     return result;
   } catch (err) {
     console.log(err);

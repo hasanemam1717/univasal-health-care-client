@@ -14,8 +14,8 @@ const HomePage = () => {
         </h1>
         {user ? (
           <p className="text-lg text-gray-700">
-            Hello, <span className="font-semibold">{user.email}</span>! You're
-            logged in.
+            Hello, <span className="font-semibold">{user.role}</span>!
+            You&lsquo;re logged in.
           </p>
         ) : (
           <p className="text-lg text-gray-600">

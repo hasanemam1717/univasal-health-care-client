@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { logOut } from "../services/Auth";
 import { useUser } from "@/context/UserContext";
+import { protectedRoutes } from "@/constants";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,9 @@ const Navbar = () => {
   const handleLogout = () => {
     logOut();
     setIsLoading(true);
-    router.push("/login");
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
   };
 
   const navItems = [

@@ -14,11 +14,13 @@ import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { loginService } from "@/components/services/Auth"; // Define this service separately
 import { loginSchema } from "./loginValidation";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
   const form = useForm({ resolver: zodResolver(loginSchema) });
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath");
 
   const {
     formState: { isSubmitting },
@@ -28,9 +30,13 @@ export default function LoginForm() {
     try {
       const response = await loginService(data);
       if (response?.success) {
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
         toast.success(response?.message);
         reset(); // Clear form fields
-        router.push("/"); // Redirect to home page
       } else {
         toast.error(response?.message);
       }
