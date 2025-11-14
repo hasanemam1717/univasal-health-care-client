@@ -14,6 +14,7 @@ import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { patientRegisterService } from "@/components/services/Auth";
 import { toast } from "sonner";
 import { patientRegisterSchema } from "./registerValidation";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const form = useForm({ resolver: zodResolver(patientRegisterSchema) });
@@ -189,6 +190,15 @@ export default function RegisterForm() {
               </button>
             </div>
           </form>
+          <h1 className="text-center">
+            Have any account please{" "}
+            <Link
+              className="text-indigo-600 mt-2 font-semibold"
+              href={"/login"}
+            >
+              Login
+            </Link>{" "}
+          </h1>
         </Form>
       </div>
     </div>

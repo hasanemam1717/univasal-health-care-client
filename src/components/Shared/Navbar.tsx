@@ -31,6 +31,8 @@ const Navbar = () => {
     setIsLoading(true);
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
+    } else {
+      router.push("/login");
     }
   };
 
@@ -47,6 +49,21 @@ const Navbar = () => {
     e.preventDefault();
     // Implement search functionality
     console.log("Searching for:", searchQuery);
+  };
+
+  // ইউজারের role কে lowercase এ কনভার্ট করা
+  const userRole = user?.role?.toLowerCase() as
+    | "admin"
+    | "doctor"
+    | "patient"
+    | undefined;
+  // Generalized dashboard redirect
+  const handleClick = () => {
+    if (userRole) {
+      router.push(`/${userRole}/dashboard`);
+    } else {
+      router.push("/login"); // fallback যদি role না থাকে
+    }
   };
 
   return (
@@ -163,6 +180,13 @@ const Navbar = () => {
                           <i className="fas fa-file-medical mr-3 text-purple-500"></i>
                           Health Records
                         </Link>
+                        <button
+                          onClick={handleClick}
+                          className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-blue-50"
+                        >
+                          <i className="fas fa-cog mr-3 text-gray-500"></i>
+                          Dashboard
+                        </button>
                         <Link
                           href="/settings"
                           className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50"

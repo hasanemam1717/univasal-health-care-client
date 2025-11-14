@@ -1,10 +1,10 @@
-import RegisterFrom from "@/components/modules/Auth/register/RegisterFrom";
-
+import RegisterForm from "@/components/modules/Auth/register/patientRegister/RegisterFrom";
+import React from "react";
 
 const RegisterPage = () => {
   return (
     <div>
-      <RegisterFrom></RegisterFrom>
+      <RegisterForm></RegisterForm>
     </div>
   );
 };

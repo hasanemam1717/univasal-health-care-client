@@ -23,6 +23,26 @@ export const patientRegisterService = async (userData: FieldValues) => {
   }
 };
 
+export const adminRegisterService = async (userData: FieldValues) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/user/create-admin`,
+      {
+        method: "POST",
+        headers: {
+          "content-Type": "Application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+    const result = await response.json();
+    console.log(response);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const loginService = async (userData: FieldValues) => {
   try {
     const response = await fetch(

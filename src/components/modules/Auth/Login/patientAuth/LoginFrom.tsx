@@ -15,6 +15,7 @@ import { loginService } from "@/components/services/Auth"; // Define this servic
 import { loginSchema } from "./loginValidation";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -49,9 +50,12 @@ export default function LoginForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 to-indigo-100 p-6">
       <div className="w-full max-w-xl bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl p-10 border border-gray-200">
-        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">
-          Patient Login
+        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-3">
+          Wellcome Back
         </h2>
+        <h1 className="text-sm text-center mb-5">
+          Enter your email and password to access your account.
+        </h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -106,6 +110,15 @@ export default function LoginForm() {
                 {isSubmitting ? "Loging..." : "Login"}
               </button>
             </div>
+            <h1 className="text-center">
+              Don&apos;t have any account please{" "}
+              <Link
+                className="text-indigo-600 font-semibold"
+                href={"/register"}
+              >
+                Register
+              </Link>{" "}
+            </h1>
           </form>
         </Form>
       </div>
